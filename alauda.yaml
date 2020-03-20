@@ -1,0 +1,169 @@
+steps:
+  - name: Docker
+    parallel:
+      - name:  notaryserver
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+              registry: "armharbor.alauda.cn",
+              dockerfile: "make/photon/notary/server.Dockerfile",
+              address: "armharbor.alauda.cn/alaudak8s/harborarmnotaryserver",
+              platforms:"linux/arm64",
+              push: true,
+              tag: "2.6.1",
+              armBuild: true,
+              args: "--build-arg NOTARY_VERSION=v0.6.1 --build-arg MIGRATE_VERSION=v3.5.4"
+            )
+
+      - name: notarysigner
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+              registry: "armharbor.alauda.cn",
+              dockerfile: "make/photon/notary/signer.Dockerfile",
+              address: "armharbor.alauda.cn/alaudak8s/harborarmnotarysigner",
+              platforms:"linux/arm64",
+              push: true,
+              tag: "2.6.1",
+              armBuild: true,
+              args: "--build-arg NOTARY_VERSION=v0.6.1 --build-arg MIGRATE_VERSION=v3.5.4"
+            )
+
+      - name: core
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/core/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmcore",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: db
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/db/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmdb",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: jobservice
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/jobservice/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmjobservice",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: portal
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/portal/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmportal",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: registry
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/registry/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmregistry",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+
+      - name: registryctl
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/registryctl/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmregistryctl",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+
+      - name: chartserver
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+              registry: "armharbor.alauda.cn",
+              dockerfile: "make/photon/chartserver/Dockerfile",
+              address: "armharbor.alauda.cn/alaudak8s/harborarmchartserver",
+              platforms:"linux/arm64",
+              push: true,
+              tag: "2.6.1",
+              armBuild: true,
+              args: "--build-arg CODE_VERSION=v0.9.0 --build-arg GIT_PATH=https://github.com/helm/chartmuseum.git"
+            )
+
+      - name: clair
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/clair/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmclair",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: nginx
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/nginx/Dockerfile",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmnginx",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+      - name: redis
+        container: tools
+        groovy:
+          - |+
+            deploy.BuildMultiArchImage(
+               registry: "armharbor.alauda.cn",
+               dockerfile: "make/photon/redis/Dockerfile.arm",
+               address: "armharbor.alauda.cn/alaudak8s/harborarmredis",
+               platforms:"linux/arm64",
+               push: true,
+               tag: "2.6.1",
+               armBuild: true,
+             )
+
+

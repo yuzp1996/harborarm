@@ -6,4 +6,4 @@ ENV BUILDTAGS include_oss include_gcs
 WORKDIR $DISTRIBUTION_DIR
 COPY . $DISTRIBUTION_DIR
 
-RUN CGO_ENABLED=0 make PREFIX=/go clean binaries
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 make PREFIX=/go clean binaries

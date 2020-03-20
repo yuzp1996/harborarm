@@ -1,4 +1,18 @@
-FROM photon:2.0
+FROM golang:1.12.12 as builder
+
+ENV DISTRIBUTION_DIR /go/src/github.com/docker
+ENV BUILDTAGS include_oss include_gcs
+
+WORKDIR $DISTRIBUTION_DIR
+COPY . $DISTRIBUTION_DIR
+
+RUN git clone -b v2.7.1 https://github.com/docker/distribution.git
+WORKDIR /go/src/github.com/docker/distribution
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 make PREFIX=/go clean binaries
+
+
+FROM photon:3.0
 
 MAINTAINER wangyan@vmware.com
 
@@ -11,7 +25,8 @@ RUN tdnf install sudo -y >> /dev/null\
 
 COPY ./make/photon/common/install_cert.sh /harbor
 COPY ./make/photon/registry/entrypoint.sh /
-COPY ./make/photon/registry/binary/registry /usr/bin
+COPY --from=builder /go/src/github.com/docker/distribution/bin/registry /usr/bin
+COPY --from=builder /go/src/github.com/docker/distribution/cmd/registry/config-example.yml /etc/registry/config.yml
 
 RUN chmod u+x /entrypoint.sh \
     && chmod u+x /usr/bin/registry

@@ -27,5 +27,5 @@ cd $SRC_PATH
 git checkout tags/$VERSION -b $VERSION
 
 #Compile
-cd $SRC_PATH/$MAIN_GO_PATH && go build -a -o $BIN_NAME
+cd $SRC_PATH/$MAIN_GO_PATH && GOPROXY=https://athens.acp.alauda.cn CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -o $BIN_NAME
 mv $BIN_NAME /go/bin/

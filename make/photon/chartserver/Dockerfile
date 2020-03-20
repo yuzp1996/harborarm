@@ -1,4 +1,21 @@
-FROM photon:2.0
+FROM golang:1.12.12 as builder
+
+ARG GIT_PATH
+ARG CODE_VERSION
+WORKDIR /
+RUN git clone $GIT_PATH
+WORKDIR /chartmuseum/cmd/chartmuseum
+RUN git checkout tags/$CODE_VERSION -b $CODE_VERSION
+ENV GOPROXY https://athens.acp.alauda.cn
+ENV CGO_ENABLED 0
+ENV GOOS linux
+ENV GOARCH arm64
+RUN go build -a -o chartm
+
+
+
+
+FROM photon:3.0
 
 RUN tdnf install -y shadow sudo >>/dev/null\
     && tdnf clean all \
@@ -6,7 +23,8 @@ RUN tdnf install -y shadow sudo >>/dev/null\
     && mkdir /harbor/ \
     && groupadd -r -g 10000 chartuser \
     && useradd --no-log-init -m -r -g 10000 -u 10000 chartuser
-COPY ./make/photon/chartserver/binary/chartm /chartserver/
+
+COPY --from=builder /chartmuseum/cmd/chartmuseum/chartm /chartserver/
 COPY ./make/photon/chartserver/docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./make/photon/common/install_cert.sh /harbor
 

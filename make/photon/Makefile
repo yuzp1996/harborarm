@@ -20,6 +20,8 @@ DOCKERCMD=$(shell which docker)
 DOCKERBUILD=$(DOCKERCMD) build --pull
 DOCKERRMIMAGE=$(DOCKERCMD) rmi
 DOCKERIMASES=$(DOCKERCMD) images
+#docker buildx build --platform linux/amd64,linux/arm64  --tag yugougou/devops-apiserver:nginx  --push  -f make/photon/nginx/Dockerfile  .
+DOCKERBUILDX= $(DOCKERCMD) buildx build --platform linux/amd64,linux/arm64
 
 # binary
 CORE_SOURCECODE=$(SRCPATH)/core
@@ -159,6 +161,13 @@ _build_nginx:
 	@echo "building nginx container for photon..."
 	@$(DOCKERBUILD) -f $(DOCKERFILEPATH_NGINX)/$(DOCKERFILENAME_NGINX) -t $(DOCKERIMAGENAME_NGINX):$(NGINXVERSION) .
 	@echo "Done."
+
+
+_buildx_nginx:
+	@echo "building mutil arch nginx container for photon..."
+	@$(DOCKERBUILDX)  -t $(DOCKERIMAGENAME_NGINX):$(NGINXVERSION)  --push -f $(DOCKERFILEPATH_NGINX)/$(DOCKERFILENAME_NGINX)  .
+	@echo "Done."
+
 
 _build_notary:
 	@if [ "$(NOTARYFLAG)" = "true" ] ; then \

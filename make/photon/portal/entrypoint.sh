@@ -12,7 +12,6 @@ ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))' swagger.yaml>
 
 cat ./package.json
 npm install
-
 ## Build harbor-portal and link it
 npm run build_lib
 npm run link_lib

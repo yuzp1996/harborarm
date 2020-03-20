@@ -20,6 +20,7 @@ cur=$PWD
 
 # the temp folder to store distribution source code...
 TEMP=`mktemp -d /$TMPDIR/distribution.XXXXXX`
+#v2.7.1
 git clone -b $VERSION https://github.com/docker/distribution.git $TEMP
 
 echo 'build the registry binary bases on the golang:1.12.12'
