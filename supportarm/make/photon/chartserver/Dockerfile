@@ -12,7 +12,7 @@ ENV GOOS linux
 ENV GOARCH arm64
 RUN go build -a -o chartm
 
-
+--build-arg CODE_VERSION=v0.9.0 --build-arg GIT_PATH=https://github.com/helm/chartmuseum.git
 
 
 FROM photon:3.0

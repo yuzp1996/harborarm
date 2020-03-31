@@ -19,8 +19,8 @@ docker build --build-arg NOTARY_VERSION=$1 --build-arg MIGRATE_VERSION=$2 -f ./b
 
 echo 'copy the binary files to local...'
 ID=$(docker create notary-binary)
-docker cp $ID:/go/bin/notary-server binary/
-docker cp $ID:/go/bin/notary-signer binary/
+docker cp $ID:/go/bin/linux_arm64/notary-server binary/
+docker cp $ID:/go/bin/linux_arm64/notary-signer binary/
 docker cp $ID:/go/bin/migrate binary/
 docker cp $ID:/migrations binary/
 

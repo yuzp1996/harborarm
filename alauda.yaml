@@ -1,0 +1,8 @@
+steps:
+  - name: Docker
+    parallel:
+      - name:  notaryserver
+        container: tools
+        groovy:
+          - |+
+            sh './buildimage.sh'

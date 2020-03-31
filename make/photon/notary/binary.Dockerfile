@@ -6,6 +6,9 @@ RUN test -n "$NOTARY_VERSION"
 RUN test -n "$MIGRATE_VERSION"
 ENV NOTARYPKG github.com/theupdateframework/notary
 ENV MIGRATEPKG github.com/golang-migrate/migrate
+ENV CGO_ENABLED 0
+ENV GOOS linux
+ENV GOARCH arm64
 
 RUN git clone -b $NOTARY_VERSION https://github.com/theupdateframework/notary.git /go/src/${NOTARYPKG}
 WORKDIR /go/src/${NOTARYPKG}
@@ -20,11 +23,11 @@ RUN cp -r /go/src/${NOTARYPKG}/migrations/ /
 RUN git clone -b $MIGRATE_VERSION https://github.com/golang-migrate/migrate /go/src/${MIGRATEPKG}
 WORKDIR /go/src/${MIGRATEPKG}
 
-RUN curl -fsSL -o /usr/local/bin/dep https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 && chmod +x /usr/local/bin/dep
-RUN dep ensure -vendor-only
+RUN GOPROXY=https://athens.acp.alauda.cn GO111MODULE=on go mod tidy
+RUN GOPROXY=https://athens.acp.alauda.cn GO111MODULE=on go mod vendor
 
 ENV DATABASES="postgres mysql redshift cassandra spanner cockroachdb clickhouse"
 ENV SOURCES="file go_bindata github aws_s3 google_cloud_storage"
 
-RUN go install -tags "$DATABASES $SOURCES" -ldflags="-X main.Version=${MIGRATE_VERSION}" ${MIGRATEPKG}/cli && mv /go/bin/cli /go/bin/migrate
+RUN go install -tags "$DATABASES $SOURCES" -ldflags="-X main.Version=${MIGRATE_VERSION}" ${MIGRATEPKG}/cli && pwd && ls && ls /go/bin/ && mv /go/bin/linux_arm64/cli /go/bin/migrate
 
