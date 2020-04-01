@@ -46,13 +46,13 @@ sed -i '26,27d' make/photon/notary/binary.Dockerfile
 sed -i '5 a ENV CGO_ENABLED 0\ENV GOOS linux\ENV GOARCH arm64' "make/photon/notary/binary.Dockerfile"
 
 sed -i '26 a RUN GOPROXY=https://athens.acp.alauda.cn GO111MODULE=on go mod tidy vendor' "make/photon/notary/binary.Dockerfile"
-
+cat make/photon/notary/binary.Dockerfile
 
 
 
 
 #make  ui_version compile_core compile_jobservice compile_registryctl compile_notary_migrate_patch build
-#make build
+make build
 
 echo "build image for arm64"
 

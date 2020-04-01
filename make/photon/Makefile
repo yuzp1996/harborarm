@@ -215,7 +215,7 @@ endef
 #_build_chart_server
 
 
-build: _build_db _build_portal _build_chart_server
+build: _build_chart_server
 
 cleanimage:
 	@echo "cleaning image for photon..."
