@@ -32,11 +32,22 @@ mv ./dumb-init_1.2.2_arm64 ./make/photon/clair/dumb-init
 sed -i 's/build --pull/buildx build --allow network.host --platform linux\/arm64 --progress plain --push/' "make/photon/Makefile"
 
 sed -i 's/--rm/--rm --env CGO_ENABLED=0 --env GOOS=linux --env GOARCH=arm64/g' "Makefile"
+
 sed -i 's/go build -a/GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -a/g' "make/photon/chartserver/compile.sh"
+
 sed -i 's/go build/CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build/g' "make/photon/clair/Dockerfile.binary"
-sed -i 's/\/go\/bin\/notary-server/\/go\/bin\/linux_arm64\/notary-server/g' "make/photon/registry/Dockerfile.binary"
-sed -i 's/\/go\/bin\/notary-signer/\/go\/bin\/linux_arm64\/notary-signer/g' "make/photon/registry/Dockerfile.binary"
-sed -i 's/CGO_ENABLED=0/GOOS=linux GOARCH=arm64 CGO_ENABLED=0/g' "make/photon/notary/builder"
+
+sed -i 's/\/go\/bin\/notary-server/\/go\/bin\/linux_arm64\/notary-server/g' "make/photon/notary/builder"
+sed -i 's/\/go\/bin\/notary-signer/\/go\/bin\/linux_arm64\/notary-signer/g' "make/photon/notary/builder"
+
+sed -i 's/CGO_ENABLED=0/GOOS=linux GOARCH=arm64 CGO_ENABLED=0/g' "make/photon/registry/Dockerfile.binary"
+
+sed -i 's/\/go\/bin\/cli/\/go/bin\/linux_arm64\/cli/g' "make/photon/notary/binary.Dockerfile"
+sed -i '26,27d' make/photon/notary/binary.Dockerfile
+sed '/5/ a\  ENV CGO_ENABLED 0\  ENV GOOS linux\ ENV GOARCH arm64' make/photon/notary/binary.Dockerfile
+sed '/26/ a\  RUN GOPROXY=https://athens.acp.alauda.cn GO111MODULE=on go mod tidy vendor' make/photon/notary/binary.Dockerfile
+
+
 
 
 
