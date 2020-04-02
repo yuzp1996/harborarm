@@ -20,6 +20,13 @@ BIN_NAME="$5"
 
 set -e
 
+echo "GOLANG_IMAGE is ${GOLANG_IMAGE}"
+echo "GIT_PATH is ${GIT_PATH}"
+echo "CODE_VERSION is ${CODE_VERSION}"
+echo "MAIN_GO_PATH is ${MAIN_GO_PATH}"
+echo "BIN_NAME is ${BIN_NAME}"
+
+
 cd `dirname $0`
 
 mkdir -p binary
