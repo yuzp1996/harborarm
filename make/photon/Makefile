@@ -143,6 +143,8 @@ _build_clair:
 
 _build_chart_server:
 	@if [ "$(CHARTFLAG)" = "true" ] ; then \
+		echo "CHARTFLAG is $(CHARTFLAG)"
+		echo "BUILDBIN is $(BUILDBIN)"
 		if [ "$(BUILDBIN)" != "true" ] ; then \
 			rm -rf $(DOCKERFILEPATH_CHART_SERVER)/binary && mkdir -p $(DOCKERFILEPATH_CHART_SERVER)/binary && \
 			$(call _get_binary, https://storage.googleapis.com/harbor-builds/bin/chartmuseum/release-$(CHARTMUSEUMVERSION)/chartm, $(DOCKERFILEPATH_CHART_SERVER)/binary/chartm); \
