@@ -1,5 +1,13 @@
 #!/bin/bash
 
+
+
+
+
+
+
+
+
 function change_base_image(){
     for file in `ls $1`
     do
@@ -10,6 +18,7 @@ function change_base_image(){
         then
             sed -i 's/photon:2.0/photon:3.0/' $1"/"$file
             echo $1"/"$file
+            cat $1"/"$file
         fi
     done
 }
@@ -21,10 +30,13 @@ sed -i 's/CLAIRFLAG=false/CLAIRFLAG=true/g' "Makefile"
 sed -i 's/-v $(BUILDPATH):/-v $(COMPILEBUILDPATH):/g' "Makefile"
 sed -i 's/-e NPM_REGISTRY=$(NPM_REGISTRY)/-e NPM_REGISTRY=$(NPM_REGISTRY) -e NOTARYFLAG=true -e CHARTFLAG=true -e CLAIRFLAG=true/g' "Makefile"
 sed -i '1 a COMPILEBUILDPATH=/go/src' "Makefile"
+cat Makefile
+
 sed -i 's/=goharbor/=yugougou/g' "make/photon/Makefile"
 
-#docker login --username yugougou --password dochub_123456
+cat make/photon/Makefile
 
+docker login armharbor.alauda.cn --username alaudak8s --password t4YSpvPrrFOsjAapawc5
 
 
 #mv ./dumb-init_1.2.2_arm64 ./make/photon/clair/dumb-init
